@@ -1,8 +1,7 @@
-package advent.day5.test;
+package advent.day5.tests;
 
 import advent.day5.OpCode;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

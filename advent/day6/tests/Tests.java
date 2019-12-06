@@ -1,4 +1,4 @@
-package advent.day6.test;
+package advent.day6.tests;
 
 import advent.day6.Orbit;
 import advent.day6.OrbitFactory;

@@ -19,7 +19,7 @@ public class OrbitFactory {
 		return instance;
 	}
 
-	public Orbit getOrbitFromName(String label){
+	public Orbit getOrbitObjectFromName(String label){
 		return getNewOrbit(label).orbitsAround;
 	}
 

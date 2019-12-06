@@ -2,7 +2,6 @@ package advent.day6;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -40,8 +39,8 @@ public class Main {
 		}
 
 		//PART 2
-		Orbit YOU = factory.getOrbitFromName("YOU");
-		Orbit SAN = factory.getOrbitFromName("SAN");
+		Orbit YOU = factory.getOrbitObjectFromName("YOU");
+		Orbit SAN = factory.getOrbitObjectFromName("SAN");
 
 		Orbit commonNode = findCommonNode(YOU, SAN);
 

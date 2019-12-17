@@ -22,9 +22,9 @@ public class Main{
     }
 
     public static void main(String[] args) throws IOException {
-        AdventFileIO fileIO = new AdventFileIO("C:\\Users\\Valentijn\\Nextcloud\\University Work\\Module 2\\Eclipse Projects\\CodeAdvent2019\\src\\advant\\day1\\input.txt");
+        AdventFileIO fileIO = new AdventFileIO("C:\\Users\\Valentijn\\Desktop\\Git-Projects\\CodeAdvent2019\\src\\advent\\day1\\input.txt");
 
-        File file = new File("C:\\Users\\Valentijn\\Nextcloud\\University Work\\Module 2\\Eclipse Projects\\CodeAdvent2019\\src\\advant\\day1\\input.txt");
+        File file = new File("C:\\Users\\Valentijn\\Desktop\\Git-Projects\\CodeAdvent2019\\src\\advent\\day1\\input.txt");
         Scanner scn = new Scanner(file);
 
         System.out.println(fileIO.hasNextLine());

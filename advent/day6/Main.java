@@ -21,7 +21,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws FileNotFoundException {
-		File file = new File("C:\\Users\\Valentijn\\Nextcloud\\University Work\\Module 2\\Eclipse Projects\\CodeAdvent2019\\src\\advent\\day6\\input.txt");
+		File file = new File("C:\\Users\\Valentijn\\Desktop\\Git-Projects\\CodeAdvent2019\\src\\advent\\day6\\input.txt");
 		Scanner scn = new Scanner(file);
 
 		OrbitFactory factory = OrbitFactory.getInstance();

@@ -122,7 +122,6 @@ public class IntCodePc {
 		List<Integer> instr = getParameters(2);
 		List<Integer> values = getParameterValues(parameterCodes, instr);
 		Output.getInstance().enterOutput(values.get(0));
-		System.out.println(values.get(0));
 	}
 
 

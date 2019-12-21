@@ -8,17 +8,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CombinationGenerator {
-	public static CombinationGenerator instance = new CombinationGenerator();
 	private List<List<Integer>> codesToUse;
 
-
-	public static CombinationGenerator getInstance() {
-		return instance;
-	}
-
-	private CombinationGenerator(){
+	public CombinationGenerator(int from, int to){
 		this.codesToUse = new ArrayList<>();
-		Itertools.permutations(IntStream.range(0,5).boxed().collect(Collectors.toList()),5).forEach(p -> codesToUse.add(p));
+		Itertools.permutations(IntStream.range(from,to).boxed().collect(Collectors.toList()),5).forEach(p -> codesToUse.add(p));
 	}
 
 	public int size(){

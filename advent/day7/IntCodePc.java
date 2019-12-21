@@ -1,9 +1,6 @@
 package advent.day7;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.IntConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -15,6 +12,7 @@ public class IntCodePc {
 	private int lastInstrAmount;
 	public boolean isFinished;
 	public List<Integer> input;
+	private boolean lastOperationSuccesful;
 
 
 	public IntCodePc(List<Integer> code, List<Integer> input){
@@ -22,6 +20,15 @@ public class IntCodePc {
 		this.index = 0;
 		this.input = input;
 		isFinished = false;
+		lastOperationSuccesful = true;
+	}
+
+	public IntCodePc(List<Integer> code){
+		this(code, new ArrayList<>());
+	}
+
+	private int moveCursor(int amount){
+		return index += amount;
 	}
 
 	private List<Integer> getParameters(int steps){
@@ -30,9 +37,6 @@ public class IntCodePc {
 
 	/**
 	 * Gets the values from the parameters. Gets the right ones no matter if location bound or address bound.
-	 * @param codes
-	 * @param values
-	 * @return
 	 */
 	private List<Integer> getParameterValues(List<Integer> codes, List<Integer> values){
 		List<Integer> finals = new ArrayList<>();
@@ -53,14 +57,13 @@ public class IntCodePc {
 		List<Integer> instructionSet = String.valueOf(code).chars().mapToObj(Character::getNumericValue).collect(Collectors.toList());
 		int instruction = instructionSet.get(instructionSet.size()-1);
 		IntConsumer cons = i -> instructionSet.add(0, 0);
-		if(Arrays.asList(1,2,7,8).contains(instruction)){
-			IntStream.range(instructionSet.size(), 5).forEach(cons);
-		}else if(Arrays.asList(3,4).contains(instruction)){
-			IntStream.range(instructionSet.size(), 3).forEach(cons);
-		}else{
-			IntStream.range(instructionSet.size(), 4).forEach(cons);
-		}
 
+		if(Arrays.asList(1,2,7,8).contains(instruction))
+			IntStream.range(instructionSet.size(), 5).forEach(cons);
+		else if(Arrays.asList(3,4).contains(instruction))
+			IntStream.range(instructionSet.size(), 3).forEach(cons);
+		else
+			IntStream.range(instructionSet.size(), 4).forEach(cons);
 		return instructionSet;
 	}
 
@@ -76,6 +79,7 @@ public class IntCodePc {
 		int addVal = values.get(0) + values.get(1);
 
 		intCode.set(instr.get(2), addVal);
+		lastOperationSuccesful = true;
 	}
 
 	private void multiply(List<Integer> parameterCodes){
@@ -85,13 +89,15 @@ public class IntCodePc {
 		int multiVal = values.get(0) * values.get(1);
 
 		intCode.set(instr.get(2), multiVal);
+		lastOperationSuccesful = true;
 	}
 
 	private void equalsOp(List<Integer> parameterCodes) {
 		List<Integer> instr = getParameters(4);
 		List<Integer> values = getParameterValues(parameterCodes, instr);
 
-		intCode.set(instr.get(2), values.get(0) == values.get(1) ? 1 : 0);
+		intCode.set(instr.get(2), values.get(0).equals(values.get(1)) ? 1 : 0);
+		lastOperationSuccesful = true;
 	}
 
 	private void lessThan(List<Integer> parameterCodes) {
@@ -99,11 +105,13 @@ public class IntCodePc {
 		List<Integer> values = getParameterValues(parameterCodes, instr);
 
 		intCode.set(instr.get(2), values.get(0) < values.get(1) ? 1 : 0);
+		lastOperationSuccesful = true;
 	}
 
 	private boolean shouldJump(List<Integer> parameterCodes){
 		List<Integer> instr = getParameters(3);
 		List<Integer> values = getParameterValues(parameterCodes, instr);
+		lastOperationSuccesful = true;
 		return values.get(0) != 0;
 	}
 
@@ -111,10 +119,16 @@ public class IntCodePc {
 		List<Integer> instr = getParameters(3);
 		List<Integer> values = getParameterValues(parameterCodes, instr);
 		index = values.get(1);
+		lastOperationSuccesful = true;
 	}
 
 	private void getInput(){
 		List<Integer> instr = getParameters(2);
+		if(this.input.isEmpty()) {
+			lastOperationSuccesful = false;
+			return;
+		}
+		lastOperationSuccesful = true;
 		intCode.set(instr.get(0), this.input.remove(0));
 	}
 
@@ -122,12 +136,14 @@ public class IntCodePc {
 		List<Integer> instr = getParameters(2);
 		List<Integer> values = getParameterValues(parameterCodes, instr);
 		Output.getInstance().enterOutput(values.get(0));
+		lastOperationSuccesful = true;
 	}
 
 
 	public void executeProgram(){
-		while(!isFinished)
+		while(!isFinished && lastOperationSuccesful)
 			executeOperation();
+		lastOperationSuccesful = true;
 	}
 
 	private void executeOperation(){
@@ -181,11 +197,8 @@ public class IntCodePc {
 				return;
 		}
 
-		moveCursor(lastInstrAmount);
-	}
-
-	private int moveCursor(int amount){
-		return index += amount;
+		if(lastOperationSuccesful)
+			moveCursor(lastInstrAmount);
 	}
 
 }

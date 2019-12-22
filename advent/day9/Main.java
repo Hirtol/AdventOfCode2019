@@ -13,7 +13,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// PART 1 & 2, Stream.of(1L) for p1, Stream.of(2L) for p2
-		List<Long> input = Stream.of(2L).collect(Collectors.toList());
+		List<Long> input = Stream.of(1L).collect(Collectors.toList());
 		IntCodePc pc = new IntCodePc(INSTRUCTIONS, input);
 		pc.executeProgram();
 		while(Output.getInstance().hasOutput())

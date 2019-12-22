@@ -6,21 +6,19 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class IntCodePc {
-
 	public List<Integer> intCode;
 	private int index;
 	private int lastInstrAmount;
 	public boolean isFinished;
 	public List<Integer> input;
-	private boolean lastOperationSuccesful;
-
+	private boolean lastReadSuccesful;
 
 	public IntCodePc(List<Integer> code, List<Integer> input){
 		this.intCode = code;
 		this.index = 0;
 		this.input = input;
 		isFinished = false;
-		lastOperationSuccesful = true;
+		lastReadSuccesful = true;
 	}
 
 	public IntCodePc(List<Integer> code){
@@ -79,7 +77,6 @@ public class IntCodePc {
 		int addVal = values.get(0) + values.get(1);
 
 		intCode.set(instr.get(2), addVal);
-		lastOperationSuccesful = true;
 	}
 
 	private void multiply(List<Integer> parameterCodes){
@@ -89,7 +86,6 @@ public class IntCodePc {
 		int multiVal = values.get(0) * values.get(1);
 
 		intCode.set(instr.get(2), multiVal);
-		lastOperationSuccesful = true;
 	}
 
 	private void equalsOp(List<Integer> parameterCodes) {
@@ -97,7 +93,6 @@ public class IntCodePc {
 		List<Integer> values = getParameterValues(parameterCodes, instr);
 
 		intCode.set(instr.get(2), values.get(0).equals(values.get(1)) ? 1 : 0);
-		lastOperationSuccesful = true;
 	}
 
 	private void lessThan(List<Integer> parameterCodes) {
@@ -105,13 +100,11 @@ public class IntCodePc {
 		List<Integer> values = getParameterValues(parameterCodes, instr);
 
 		intCode.set(instr.get(2), values.get(0) < values.get(1) ? 1 : 0);
-		lastOperationSuccesful = true;
 	}
 
 	private boolean shouldJump(List<Integer> parameterCodes){
 		List<Integer> instr = getParameters(3);
 		List<Integer> values = getParameterValues(parameterCodes, instr);
-		lastOperationSuccesful = true;
 		return values.get(0) != 0;
 	}
 
@@ -119,31 +112,26 @@ public class IntCodePc {
 		List<Integer> instr = getParameters(3);
 		List<Integer> values = getParameterValues(parameterCodes, instr);
 		index = values.get(1);
-		lastOperationSuccesful = true;
 	}
 
-	private void getInput(){
+	private void getInput() {
 		List<Integer> instr = getParameters(2);
-		if(this.input.isEmpty()) {
-			lastOperationSuccesful = false;
-			return;
-		}
-		lastOperationSuccesful = true;
-		intCode.set(instr.get(0), this.input.remove(0));
+		lastReadSuccesful = !this.input.isEmpty();
+		if (lastReadSuccesful)
+			intCode.set(instr.get(0), this.input.remove(0));
 	}
 
 	private void sendOutput(List<Integer> parameterCodes){
 		List<Integer> instr = getParameters(2);
 		List<Integer> values = getParameterValues(parameterCodes, instr);
 		Output.getInstance().enterOutput(values.get(0));
-		lastOperationSuccesful = true;
 	}
 
 
 	public void executeProgram(){
-		while(!isFinished && lastOperationSuccesful)
+		while(!isFinished && lastReadSuccesful)
 			executeOperation();
-		lastOperationSuccesful = true;
+		lastReadSuccesful = true;
 	}
 
 	private void executeOperation(){
@@ -197,8 +185,7 @@ public class IntCodePc {
 				return;
 		}
 
-		if(lastOperationSuccesful)
+		if(lastReadSuccesful)
 			moveCursor(lastInstrAmount);
 	}
-
 }

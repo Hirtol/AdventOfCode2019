@@ -1,4 +1,4 @@
-package advent.day7;
+package advent.IntCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 public class Output {
 
 	private static Output instance = new Output();
-	private List<Integer> queuedOutput;
+	private List<Long> queuedOutput;
 
 	private Output(){
 		this.queuedOutput = new ArrayList<>();
@@ -16,13 +16,17 @@ public class Output {
 		return instance;
 	}
 
-	public int getQueuedOutput() {
+	public long getQueuedOutput() {
 		if(queuedOutput.size() > 0)
 			return queuedOutput.remove(0);
 		return -1;
 	}
 
-	public void enterOutput(int value){
+	public boolean hasOutput(){
+		return !queuedOutput.isEmpty();
+	}
+
+	public void enterOutput(long value){
 		queuedOutput.add(value);
 	}
 }

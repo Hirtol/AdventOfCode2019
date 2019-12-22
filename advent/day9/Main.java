@@ -1,4 +1,7 @@
-package advent.IntCode;
+package advent.day9;
+
+import advent.IntCode.IntCodePc;
+import advent.IntCode.Output;
 
 import java.util.List;
 import java.util.stream.Collectors;

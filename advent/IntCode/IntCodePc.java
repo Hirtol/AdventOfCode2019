@@ -16,7 +16,6 @@ public class IntCodePc {
 	private int relativeBase;
 	private boolean lastReadSuccessful;
 
-
 	public IntCodePc(List<Long> code, List<Long> input) {
 		this.intCode = code;
 		this.index = 0;
